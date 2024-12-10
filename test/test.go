@@ -28,7 +28,8 @@ func StartMongoDB() (cleanup func()) {
 
 	makeDown := func() {
 		cmd := exec.Command(
-			"docker-compose",
+			"docker",
+			"compose",
 			"-f",
 			fmt.Sprintf("%s/docker-compose.yml", dirpath),
 			"down",
@@ -38,13 +39,14 @@ func StartMongoDB() (cleanup func()) {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
-			log.Fatalf("docker-compose down: %s", err)
+			log.Fatalf("docker compose down: %s", err)
 		}
 	}
 	makeDown()
 
 	cmd := exec.Command(
-		"docker-compose",
+		"docker",
+		"compose",
 		"-f",
 		fmt.Sprintf("%s/docker-compose.yml", dirpath),
 		"build",
@@ -52,10 +54,11 @@ func StartMongoDB() (cleanup func()) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
-		log.Fatalf("docker-compose build: %s", err)
+		log.Fatalf("docker compose build: %s", err)
 	}
 	cmd = exec.Command(
-		"docker-compose",
+		"docker",
+		"compose",
 		"-f",
 		fmt.Sprintf("%s/docker-compose.yml", dirpath),
 		"up",
@@ -64,7 +67,7 @@ func StartMongoDB() (cleanup func()) {
 	//cmd.Stdout = os.Stdout
 	//cmd.Stderr = os.Stderr
 	if err := cmd.Start(); err != nil {
-		log.Fatalf("running docker-compose: %s", err)
+		log.Fatalf("running docker compose: %s", err)
 	}
 
 	limit := 20
